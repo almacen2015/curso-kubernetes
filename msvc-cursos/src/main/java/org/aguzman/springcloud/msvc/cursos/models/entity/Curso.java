@@ -53,6 +53,7 @@ public class Curso {
     public void removeCursoUsuario(CursoUsuario cursoUsuario) {
         cursoUsuarios.remove(cursoUsuario);
     }
+
     public List<CursoUsuario> getCursoUsuarios() {
         return cursoUsuarios;
     }
