@@ -1,5 +1,6 @@
 package org.aguzman.springcloud.msvc.usuarios.services;
 
+import org.aguzman.springcloud.msvc.usuarios.clients.CursoClienteRest;
 import org.aguzman.springcloud.msvc.usuarios.models.entity.Usuario;
 import org.aguzman.springcloud.msvc.usuarios.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UsuarioServiceImpl implements UsuarioService{
+public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
     private UsuarioRepository repository;
+
+    @Autowired
+    private CursoClienteRest client;
 
     @Override
     @Transactional(readOnly = true)
@@ -37,6 +41,7 @@ public class UsuarioServiceImpl implements UsuarioService{
     @Transactional
     public void eliminar(Long id) {
         repository.deleteById(id);
+        client.eliminarCursoUsuarioPorId(id);
     }
 
     @Override
@@ -47,5 +52,11 @@ public class UsuarioServiceImpl implements UsuarioService{
     @Override
     public boolean existePorEmail(String email) {
         return repository.existsByEmail(email);
+    }
+
+    @Override
+    @Transactional
+    public List<Usuario> listarPorIds(Iterable<Long> ids) {
+        return (List<Usuario>) repository.findAllById(ids);
     }
 }
